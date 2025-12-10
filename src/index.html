@@ -6,14 +6,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     :root {
-      --bg: #03040b;
-      --bg-alt: #070b18;
+      --bg: #050612;
+      --bg-alt: #0c0f1f;
       --accent: #26c6da;
-      --accent2: #7c4dff;
+      --accent-soft: rgba(38,198,218,0.25);
       --text: #f5f7ff;
       --text-muted: #a5b0d4;
+      --danger: #ff5252;
       --radius: 18px;
-      --transition-fast: 0.4s ease;
+      --transition-fast: 0.5s ease;
       --transition-slow: 0.8s ease;
     }
 
@@ -23,65 +24,61 @@
       padding: 0;
     }
 
-    html, body {
-      width: 100%;
-      height: 100%;
-    }
-
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
         Roboto, sans-serif;
-      background: radial-gradient(circle at top, #151b3b 0, #03040b 55%);
+      background: radial-gradient(circle at top, #171c3c 0, #050612 55%);
       color: var(--text);
+      height: 100vh;
       overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .app-wrapper {
       width: 100%;
-      height: 100%;
+      max-width: 1200px;
+      padding: 16px;
     }
 
     .frame {
       position: relative;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle at top, #171d3e 0, #02030a 55%);
-      display: flex;
-      flex-direction: column;
-      padding: 12px 20px 18px;
-    }
-
-    @media (max-width: 900px) {
-      .frame { padding: 8px; }
+      background: linear-gradient(135deg, #050612 0, #080c1c 40%, #050612 100%);
+      border-radius: 24px;
+      padding: 18px 20px 20px;
+      box-shadow:
+        0 24px 60px rgba(0, 0, 0, 0.8),
+        0 0 0 1px rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
     }
 
     .frame-header {
-      flex-shrink: 0;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      padding-bottom: 6px;
+      margin-bottom: 12px;
     }
 
     .brand {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
     }
 
     .brand-logo {
-      width: 32px;
-      height: 32px;
-      border-radius: 12px;
+      width: 26px;
+      height: 26px;
+      border-radius: 10px;
       background: radial-gradient(circle at 30% 20%, #ffffff 0, #26c6da 45%, #0c0f1f 100%);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 700;
       color: #050612;
-      box-shadow: 0 0 18px rgba(38, 198, 218, 0.7);
+      box-shadow: 0 0 18px rgba(38, 198, 218, 0.6);
     }
 
     .brand-text {
@@ -91,9 +88,9 @@
     }
 
     .brand-title {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.03em;
       text-transform: uppercase;
       color: var(--text-muted);
     }
@@ -121,7 +118,7 @@
       letter-spacing: 0.14em;
       background: rgba(6, 9, 26, 0.9);
       color: var(--text-muted);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.06);
       display: flex;
       align-items: center;
       gap: 6px;
@@ -131,13 +128,15 @@
     }
 
     .fullscreen-btn:hover {
-      background: rgba(38, 198, 218, 0.15);
+      background: rgba(38, 198, 218, 0.12);
       color: var(--accent);
-      border-color: rgba(38, 198, 218, 0.6);
+      border-color: rgba(38, 198, 218, 0.5);
       transform: translateY(-1px);
     }
 
-    .fullscreen-btn span.icon { font-size: 13px; }
+    .fullscreen-btn span.icon {
+      font-size: 13px;
+    }
 
     .timer {
       display: flex;
@@ -169,48 +168,31 @@
     }
 
     .frame-main {
-      flex: 1;
       display: grid;
-      grid-template-columns: minmax(0, 1.7fr) minmax(0, 1.1fr);
+      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
       gap: 18px;
-      margin-top: 4px;
       align-items: stretch;
-      min-height: 0;
-    }
-
-    @media (max-width: 1050px) {
-      .frame-main {
-        grid-template-columns: 1.5fr 1.1fr;
-      }
     }
 
     @media (max-width: 900px) {
       .frame-main {
         grid-template-columns: 1fr;
-        grid-auto-rows: auto;
       }
     }
 
-    /* SLIDE AREA */
-
     .slide-container {
       position: relative;
-      background: radial-gradient(circle at top left, #23294b 0, #050614 55%);
+      background: radial-gradient(circle at top left, #202647 0, #060713 55%);
       border-radius: 20px;
-      padding: 18px 22px 16px;
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      box-shadow:
-        0 24px 60px rgba(0, 0, 0, 0.8),
-        0 0 0 1px rgba(255, 255, 255, 0.02);
-      display: flex;
-      flex-direction: column;
-      min-height: 0;
+      overflow: hidden;
+      padding: 18px 20px;
+      border: 1px solid rgba(255, 255, 255, 0.04);
     }
 
     .slide-number {
       position: absolute;
       top: 12px;
-      right: 22px;
+      right: 18px;
       font-size: 11px;
       letter-spacing: 0.18em;
       text-transform: uppercase;
@@ -220,15 +202,14 @@
 
     .slides-inner {
       position: relative;
-      flex: 1;
-      min-height: 360px; /* mais alto para imagens grandes */
-      margin-top: 4px;
+      height: 100%;
+      min-height: 260px;
     }
 
     .slide {
       position: absolute;
       inset: 0;
-      padding-top: 14px;
+      padding-top: 10px;
       opacity: 0;
       transform: translateX(40px) scale(0.98);
       filter: blur(6px);
@@ -236,17 +217,10 @@
         opacity var(--transition-slow),
         transform var(--transition-slow),
         filter var(--transition-slow);
-      display: grid;
-      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.3fr); /* mais espaço pra imagem */
-      gap: 18px;
-      align-items: center;
-    }
-
-    @media (max-width: 900px) {
-      .slide {
-        grid-template-columns: 1fr;
-        align-items: flex-start;
-      }
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 16px;
     }
 
     .slide.active {
@@ -256,15 +230,8 @@
       pointer-events: auto;
     }
 
-    .slide-left {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      justify-content: center;
-    }
-
     .slide-title {
-      font-size: clamp(22px, 2.4vw, 28px);
+      font-size: 26px;
       font-weight: 700;
       letter-spacing: 0.03em;
       text-transform: uppercase;
@@ -282,7 +249,7 @@
       padding: 5px 9px;
       border-radius: 999px;
       background: rgba(12, 15, 31, 0.9);
-      border: 1px solid rgba(38, 198, 218, 0.35);
+      border: 1px solid rgba(38, 198, 218, 0.3);
       width: fit-content;
     }
 
@@ -295,7 +262,7 @@
 
     .slide-body {
       font-size: 15px;
-      max-width: 560px;
+      max-width: 540px;
       color: var(--text-muted);
     }
 
@@ -305,156 +272,47 @@
       opacity: 0.8;
     }
 
-    /* VISUAL PANEL */
-
-    .slide-visual {
-      position: relative;
-      border-radius: 16px;
-      overflow: hidden;
-      height: 100%;
-      min-height: 260px; /* aumenta área de imagem */
-      background: radial-gradient(circle at top right, #283160 0, #070816 60%);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      padding: 12px 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .visual-label {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: var(--text-muted);
-    }
-
-    .visual-main {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-    }
-
-    /* Imagem real */
-
-    .visual-img {
+    .timer-progress {
       width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-      border-radius: 14px;
-      box-shadow: 0 0 18px rgba(0, 0, 0, 0.7);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      background: #02030a;
-    }
-
-    /* Gráficos abstratos (mantive como fallback) */
-
-    .visual-chart-bars {
-      width: 90%;
-      max-width: 260px;
-      height: 90px;
-      display: flex;
-      align-items: flex-end;
-      gap: 6px;
-    }
-    .visual-chart-bars span {
-      flex: 1;
-      border-radius: 999px 999px 0 0;
-      background: linear-gradient(to top, var(--accent2), var(--accent));
-      box-shadow: 0 0 12px rgba(38, 198, 218, 0.6);
-      opacity: 0.9;
-    }
-
-    .visual-chart-line {
-      width: 90%;
-      max-width: 260px;
-      height: 90px;
-      border-radius: 12px;
-      background: linear-gradient(to top, rgba(8, 10, 26, 0.95), rgba(19, 26, 60, 0.95));
-      position: relative;
-      overflow: hidden;
-    }
-    .visual-chart-line::before {
-      content: "";
-      position: absolute;
-      inset: 12px 10px 10px 10px;
-      background:
-        linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px) repeat-x,
-        linear-gradient(0deg, rgba(255,255,255,0.06) 1px, transparent 1px) repeat-y;
-      background-size: 18px 100%, 100% 16px;
-      opacity: 0.8;
-    }
-    .visual-chart-line::after {
-      content: "";
-      position: absolute;
-      left: 6%;
-      top: 55%;
-      width: 110%;
-      height: 60%;
-      background: conic-gradient(from 190deg, var(--accent), var(--accent2), var(--accent));
-      filter: blur(2px);
-      opacity: 0.9;
-      clip-path: polygon(0 95%, 8% 70%, 22% 75%, 38% 40%, 52% 55%, 68% 30%, 82% 36%, 100% 5%, 100% 100%, 0 100%);
-    }
-
-    .visual-doc {
-      width: 90%;
-      max-width: 260px;
-      height: 110px;
-      border-radius: 14px;
-      background: linear-gradient(135deg, rgba(8, 10, 24, 0.95), rgba(22, 30, 70, 0.95));
-      position: relative;
-      overflow: hidden;
-    }
-    .visual-doc::before,
-    .visual-doc::after {
-      content: "";
-      position: absolute;
-      left: 12px;
-      right: 12px;
-      height: 8px;
-      border-radius: 999px;
-      background: linear-gradient(90deg, rgba(255,255,255,0.18), rgba(38,198,218,0.4));
-    }
-    .visual-doc::before { top: 18px; }
-    .visual-doc::after { top: 40px; }
-    .visual-doc-lines {
-      position: absolute;
-      left: 12px;
-      right: 12px;
-      bottom: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-    .visual-doc-lines span {
       height: 4px;
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.14);
+      background: rgba(255, 255, 255, 0.06);
+      overflow: hidden;
+      margin-top: 10px;
+      position: relative;
     }
 
-    /* SIDEBAR */
+    .timer-progress-bar {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), #7c4dff);
+      transform-origin: left;
+    }
+
+    .timer-progress-glow {
+      position: absolute;
+      inset: 0;
+      box-shadow: 0 0 18px rgba(38, 198, 218, 0.6);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
 
     .frame-sidebar {
       display: flex;
       flex-direction: column;
       gap: 14px;
-      background: radial-gradient(circle at top right, #171d3e 0, #050615 60%);
+      background: radial-gradient(circle at top right, #151c3b 0, #060713 60%);
       border-radius: 20px;
-      padding: 14px 14px 12px;
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      box-shadow:
-        0 18px 40px rgba(0, 0, 0, 0.75),
-        0 0 0 1px rgba(255, 255, 255, 0.02);
-      min-height: 0;
+      padding: 16px 16px 14px;
+      border: 1px solid rgba(255, 255, 255, 0.04);
     }
 
     .meta-block {
       padding: 10px 11px;
       border-radius: 14px;
-      background: rgba(4, 6, 20, 0.92);
-      border: 1px solid rgba(255, 255, 255, 0.04);
+      background: rgba(4, 6, 20, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.03);
       display: flex;
       flex-direction: column;
       gap: 4px;
@@ -478,11 +336,11 @@
     }
 
     .nav {
-      margin-top: auto;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 10px;
+      margin-top: 2px;
     }
 
     .nav-buttons {
@@ -517,7 +375,9 @@
       transform: translateY(-1px);
     }
 
-    .nav-btn span.icon { font-size: 13px; }
+    .nav-btn span.icon {
+      font-size: 13px;
+    }
 
     .nav-indicators {
       display: flex;
@@ -525,7 +385,6 @@
       gap: 4px;
       flex-wrap: wrap;
       justify-content: flex-end;
-      margin-bottom: 4px;
     }
 
     .nav-dot {
@@ -547,38 +406,6 @@
       font-size: 10px;
       color: var(--text-muted);
       text-align: right;
-      opacity: 0.8;
-    }
-
-    .timer-progress {
-      width: 100%;
-      height: 4px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.08);
-      overflow: hidden;
-      margin-top: 10px;
-      position: relative;
-    }
-
-    .timer-progress-bar {
-      width: 0%;
-      height: 100%;
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      transform-origin: left;
-    }
-
-    .timer-progress-glow {
-      position: absolute;
-      inset: 0;
-      box-shadow: 0 0 18px rgba(38, 198, 218, 0.6);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      pointer-events: none;
-    }
-
-    .slide-meta {
-      font-size: 12px;
-      color: var(--text-muted);
       opacity: 0.8;
     }
 
@@ -617,7 +444,9 @@
       <!-- SLIDES -->
       <div class="slide-container">
         <div class="slide-number" id="slideCounter">01 / 20</div>
-        <div class="slides-inner" id="slidesRoot"></div>
+        <div class="slides-inner" id="slidesRoot">
+          <!-- Slides serão inseridos via JS -->
+        </div>
         <div class="timer-progress">
           <div class="timer-progress-bar" id="progressBar"></div>
           <div class="timer-progress-glow" id="progressGlow"></div>
@@ -664,145 +493,116 @@
 </div>
 
 <script>
-  // Slides + nomes padrão de imagens
+  // Conteúdo dos slides (título, tag, texto)
   const slidesData = [
     {
       title: "Projeto de Mestrado",
       tag: "Contextualização",
-      text: "Como o artigo se conecta ao estudo em Modelagem e Otimização.",
-      visual: "image",
-      imageSrc: "slide01_projeto.png",
-      imageCaption: "Visão geral do projeto de mestrado."
+      text: "Como o artigo se conecta ao estudo em Modelagem e Otimização."
     },
     {
       title: "Sharma et al., 2023",
       tag: "Referência",
-      text: "Revisão recente e central em Physics-Informed Machine Learning aplicado a fluidos.",
-      visual: "image",
-      imageSrc: "slide02_artigo.png",
-      imageCaption: "Capa ou trecho do artigo de Sharma et al. (2023)."
+      text: "Revisão recente e central em Physics-Informed Machine Learning aplicado a fluidos."
     },
     {
       title: "Physics-Informed ML",
       tag: "Tema Geral",
-      text: "Integra algoritmos de aprendizado profundo com leis físicas descritas por EDPs.",
-      visual: "image",
-      imageSrc: "slide03_piml.png",
-      imageCaption: "Representação visual de PIML / rede neural + equações."
+      text: "Integra algoritmos de aprendizado profundo com leis físicas descritas por EDPs."
     },
     {
       title: "Lacunas do PIML",
       tag: "Problema",
-      text: "Falta de padronização, robustez e benchmark unificado para cenários complexos.",
-      visual: "line"
+      text: "Falta de padronização, robustez e benchmark unificado para cenários complexos."
     },
     {
       title: "Objetivo do Artigo",
       tag: "Objetivo Central",
-      text: "Revisar métodos de PIML, aplicações e desafios em mecânica dos fluidos.",
-      visual: "doc"
+      text: "Realizar uma revisão abrangente, mapear métodos e apontar desafios em PIML."
     },
     {
       title: "Base Teórica",
       tag: "Fundamentos",
-      text: "PINNs, arquiteturas PDE-preserving e integração da física em loss, entradas e saídas.",
-      visual: "doc"
+      text: "PINNs, arquiteturas PDE-preserving e integração da física em loss, entradas e saídas."
     },
     {
       title: "Objetivos Específicos",
       tag: "Desdobramentos",
-      text: "Classificar métodos, comparar arquiteturas e avaliar limites em regimes complexos.",
-      visual: "doc"
+      text: "Classificar métodos, comparar arquiteturas e avaliar limites em regimes complexos."
     },
     {
       title: "Metodologia Geral",
       tag: "Estratégia",
-      text: "Revisão sistemática da literatura combinada com estudo de caso em cavidade 2D.",
-      visual: "image",
-      imageSrc: "slide08_cavidade2d.png",
-      imageCaption: "Geometria da cavidade impulsionada 2D usada como benchmark."
+      text: "Revisão sistemática da literatura combinada com estudo de caso em cavidade 2D."
     },
     {
       title: "Procedimentos",
       tag: "Benchmarking",
-      text: "Comparação entre PPNN e ConvResNet em previsão de campo de escoamento.",
-      visual: "chartBars"
+      text: "Comparação entre PPNN e ConvResNet em previsão de campo de escoamento."
     },
     {
       title: "Amostra",
       tag: "Corpus",
-      text: "Conjunto de trabalhos recentes em PIML e simulações numéricas controladas.",
-      visual: "doc"
+      text: "Conjunto de trabalhos recentes em PIML e simulações numéricas controladas."
     },
     {
       title: "Resultado Principal",
       tag: "Resultados",
-      text: "PPNN apresenta maior estabilidade temporal e melhor generalização que ConvResNet.",
-      visual: "image",
-      imageSrc: "slide11_resultado_ppnn.png",
-      imageCaption: "Gráfico de desempenho / estabilidade da PPNN."
+      text: "PPNN apresenta maior estabilidade temporal e melhor generalização que ConvResNet."
     },
     {
       title: "Resultado Secundário",
       tag: "Limites Atuais",
-      text: "PINNs mostram MSE elevado em escoamentos turbulentos de alto número de Reynolds.",
-      visual: "image",
-      imageSrc: "slide12_resultado_turbulento.png",
-      imageCaption: "Gráfico de erro em regime turbulento de alto Re."
+      text: "PINNs mostram MSE elevado em escoamentos turbulentos de alto número de Reynolds."
     },
     {
       title: "Discussão",
       tag: "Análise",
-      text: "Incorporar física melhora eficiência de dados e robustez, mas há barreiras estruturais.",
-      visual: "line"
+      text: "Incorporar física melhora eficiência de dados e robustez, mas há barreiras estruturais."
     },
     {
       title: "Conclusão",
       tag: "Síntese",
-      text: "PIML é promissor, porém necessita de arquiteturas mais sofisticadas e benchmarks sólidos.",
-      visual: "doc"
+      text: "PIML é promissor, porém necessita de arquiteturas mais sofisticadas e benchmarks sólidos."
     },
     {
       title: "Relevância Científica",
       tag: "Impacto",
-      text: "Artigo ocupa posição central na literatura e organiza o estado da arte da área.",
-      visual: "image",
-      imageSrc: "slide15_rede_citacoes.png",
-      imageCaption: "Rede de citações do artigo na literatura de PIML."
+      text: "Artigo ocupa posição central na literatura e organiza o estado da arte da área."
     },
     {
       title: "Limitações",
       tag: "Crítica",
-      text: "Desafios com alta dimensionalidade, física multiescala e geometrias complexas.",
-      visual: "line"
+      text: "Desafios com alta dimensionalidade, física multiescala e geometrias complexas."
     },
     {
       title: "Contribuição Epistêmica",
       tag: "Avanço",
-      text: "Oferece taxonomia clara e destaca tendências como GNNs e técnicas de UQ.",
-      visual: "chartBars"
+      text: "Oferece taxonomia clara e destaca tendências como GNNs e técnicas de UQ."
     },
     {
       title: "Relação com o Projeto",
       tag: "Aplicação",
-      text: "Base teórica e metodológica para combinar CFD clássico com PIML no mestrado.",
-      visual: "doc"
+      text: "Base teórica e metodológica para combinar CFD clássico com PIML no mestrado."
     },
     {
       title: "Próximos Passos",
       tag: "Perspectivas",
-      text: "Explorar modelos híbridos e balanceamento de funções de perda em cenários reais.",
-      visual: "chartLine"
+      text: "Explorar modelos híbridos e balanceamento de funções de perda em cenários reais."
     },
     {
       title: "Encerramento",
       tag: "Fechamento",
-      text: "Conclusão da apresentação e convite à discussão sobre aplicações futuras em PIML.",
-      visual: "doc"
+      text: "Conclusão da apresentação e convite à discussão sobre aplicações futuras em PIML."
     }
   ];
 
   const SLIDE_DURATION = 20; // segundos
+  let currentIndex = 0;
+  let timer = SLIDE_DURATION;
+  let intervalId = null;
+  let progressIntervalId = null;
+
   const slidesRoot = document.getElementById("slidesRoot");
   const navDots = document.getElementById("navDots");
   const timerText = document.getElementById("timerText");
@@ -811,90 +611,13 @@
   const progressGlow = document.getElementById("progressGlow");
   const fullscreenBtn = document.getElementById("fullscreenBtn");
 
-  let currentIndex = 0;
-  let timer = SLIDE_DURATION;
-  let intervalId = null;
-  let progressIntervalId = null;
-  const SLIDES_TOTAL = slidesData.length;
-
-  function createVisual(slide) {
-    const type = slide.visual;
-    const wrapper = document.createElement("div");
-    wrapper.className = "slide-visual";
-
-    const label = document.createElement("div");
-    label.className = "visual-label";
-
-    const visualMain = document.createElement("div");
-    visualMain.className = "visual-main";
-
-    switch (type) {
-      case "image": {
-        label.textContent = slide.imageCaption || "Figura do artigo";
-        const img = document.createElement("img");
-        img.className = "visual-img";
-        img.src = slide.imageSrc;   // aqui você só renomeia o arquivo
-        img.alt = slide.imageCaption || slide.title;
-        visualMain.appendChild(img);
-        break;
-      }
-      case "chartBars": {
-        label.textContent = "Gráfico comparativo · PPNN vs ConvResNet";
-        const bars = document.createElement("div");
-        bars.className = "visual-chart-bars";
-        ["40%", "70%", "90%", "55%"].forEach(h => {
-          const b = document.createElement("span");
-          b.style.height = h;
-          bars.appendChild(b);
-        });
-        visualMain.appendChild(bars);
-        break;
-      }
-      case "chartLine": {
-        label.textContent = "Estabilidade temporal · Erro ao longo do tempo";
-        const line = document.createElement("div");
-        line.className = "visual-chart-line";
-        visualMain.appendChild(line);
-        break;
-      }
-      case "line": {
-        label.textContent = "Comportamento de erro / incerteza";
-        const line2 = document.createElement("div");
-        line2.className = "visual-chart-line";
-        visualMain.appendChild(line2);
-        break;
-      }
-      case "doc":
-      default: {
-        label.textContent = slide.imageCaption || "Visão geral · Estrutura conceitual do artigo";
-        const doc = document.createElement("div");
-        doc.className = "visual-doc";
-        const lines = document.createElement("div");
-        lines.className = "visual-doc-lines";
-        ["", "", ""].forEach(() => {
-          const l = document.createElement("span");
-          lines.appendChild(l);
-        });
-        doc.appendChild(lines);
-        visualMain.appendChild(doc);
-        break;
-      }
-    }
-
-    wrapper.appendChild(label);
-    wrapper.appendChild(visualMain);
-    return wrapper;
-  }
-
   function createSlides() {
     slidesData.forEach((slide, index) => {
       const slideEl = document.createElement("div");
       slideEl.className = "slide";
       slideEl.dataset.index = index;
 
-      const left = document.createElement("div");
-      left.className = "slide-left";
-      left.innerHTML = `
+      slideEl.innerHTML = `
         <div class="slide-tag">
           <span class="slide-tag-dot"></span>
           <span>${slide.tag}</span>
@@ -903,11 +626,6 @@
         <div class="slide-body">${slide.text}</div>
         <div class="slide-meta">PechaKucha · 20 segundos por slide · ${index + 1}/20</div>
       `;
-
-      const right = createVisual(slide);
-
-      slideEl.appendChild(left);
-      slideEl.appendChild(right);
       slidesRoot.appendChild(slideEl);
 
       const dot = document.createElement("div");
@@ -934,16 +652,14 @@
     slideCounter.textContent =
       String(currentIndex + 1).padStart(2, "0") +
       " / " +
-      String(SLIDES_TOTAL).padStart(2, "0");
+      String(slidesData.length).padStart(2, "0");
   }
-
-  const SLIDE_DURATION_SEC = SLIDE_DURATION;
 
   function startTimer() {
     clearInterval(intervalId);
     clearInterval(progressIntervalId);
 
-    timer = SLIDE_DURATION_SEC;
+    timer = SLIDE_DURATION;
     timerText.textContent = `${timer}s`;
     progressBar.style.width = "0%";
     progressGlow.style.opacity = "0";
@@ -951,13 +667,13 @@
     intervalId = setInterval(() => {
       timer--;
       if (timer <= 0) {
-        nextSlide();
+        nextSlide(false);
       } else {
         timerText.textContent = `${timer}s`;
       }
     }, 1000);
 
-    const totalSteps = SLIDE_DURATION_SEC * 10; // 0.1s
+    const totalSteps = SLIDE_DURATION * 10; // 0.1s steps
     let step = 0;
     progressIntervalId = setInterval(() => {
       step++;
@@ -969,7 +685,7 @@
   }
 
   function goToSlide(index, resetTimer = false) {
-    currentIndex = (index + SLIDES_TOTAL) % SLIDES_TOTAL;
+    currentIndex = (index + slidesData.length) % slidesData.length;
     updateUI();
     if (resetTimer) startTimer();
   }
@@ -985,6 +701,7 @@
   document.getElementById("nextBtn").addEventListener("click", () => nextSlide());
   document.getElementById("prevBtn").addEventListener("click", () => prevSlide());
 
+  // Teclado: setas
   document.addEventListener("keydown", (e) => {
     if (e.key === "ArrowRight") nextSlide();
     if (e.key === "ArrowLeft") prevSlide();
