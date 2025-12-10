@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>PechaKucha PIML – Matheus Borges</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --bg: #050612;
+      --bg-alt: #0c0f1f;
+      --accent: #26c6da;
+      --accent-soft: rgba(38,198,218,0.25);
+      --text: #f5f7ff;
+      --text-muted: #a5b0d4;
+      --danger: #ff5252;
+      --radius: 18px;
+      --transition-fast: 0.5s ease;
+      --transition-slow: 0.8s ease;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        Roboto, sans-serif;
+      background: radial-gradient(circle at top, #171c3c 0, #050612 55%);
+      color: var(--text);
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .app-wrapper {
+      width: 100%;
+      max-width: 1200px;
+      padding: 16px;
+    }
+
+    .frame {
+      position: relative;
+      background: linear-gradient(135deg, #050612 0, #080c1c 40%, #050612 100%);
+      border-radius: 24px;
+      padding: 18px 20px 20px;
+      box-shadow:
+        0 24px 60px rgba(0, 0, 0, 0.8),
+        0 0 0 1px rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .frame-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-logo {
+      width: 26px;
+      height: 26px;
+      border-radius: 10px;
+      background: radial-gradient(circle at 30% 20%, #ffffff 0, #26c6da 45%, #0c0f1f 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      font-weight: 700;
+      color: #050612;
+      box-shadow: 0 0 18px rgba(38, 198, 218, 0.6);
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+
+    .brand-title {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .brand-sub {
+      font-size: 11px;
+      color: var(--accent);
+      opacity: 0.9;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .fullscreen-btn {
+      border: none;
+      outline: none;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      background: rgba(6, 9, 26, 0.9);
+      color: var(--text-muted);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: background var(--transition-fast), color var(--transition-fast),
+        border-color var(--transition-fast), transform 0.15s ease;
+    }
+
+    .fullscreen-btn:hover {
+      background: rgba(38, 198, 218, 0.12);
+      color: var(--accent);
+      border-color: rgba(38, 198, 218, 0.5);
+      transform: translateY(-1px);
+    }
+
+    .fullscreen-btn span.icon {
+      font-size: 13px;
+    }
+
+    .timer {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .timer-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 10px rgba(38, 198, 218, 0.8);
+      animation: pulse 1.4s infinite;
+    }
+
+    .timer-label {
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 600;
+      font-size: 10px;
+    }
+
+    .timer-value {
+      font-variant-numeric: tabular-nums;
+      font-size: 11px;
+    }
+
+    .frame-main {
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    @media (max-width: 900px) {
+      .frame-main {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .slide-container {
+      position: relative;
+      background: radial-gradient(circle at top left, #202647 0, #060713 55%);
+      border-radius: 20px;
+      overflow: hidden;
+      padding: 18px 20px;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .slide-number {
+      position: absolute;
+      top: 12px;
+      right: 18px;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      opacity: 0.8;
+    }
+
+    .slides-inner {
+      position: relative;
+      height: 100%;
+      min-height: 260px;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      padding-top: 10px;
+      opacity: 0;
+      transform: translateX(40px) scale(0.98);
+      filter: blur(6px);
+      transition:
+        opacity var(--transition-slow),
+        transform var(--transition-slow),
+        filter var(--transition-slow);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    .slide.active {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+      filter: blur(0);
+      pointer-events: auto;
+    }
+
+    .slide-title {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      line-height: 1.2;
+    }
+
+    .slide-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: rgba(12, 15, 31, 0.9);
+      border: 1px solid rgba(38, 198, 218, 0.3);
+      width: fit-content;
+    }
+
+    .slide-tag-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    .slide-body {
+      font-size: 15px;
+      max-width: 540px;
+      color: var(--text-muted);
+    }
+
+    .slide-meta {
+      font-size: 12px;
+      color: var(--text-muted);
+      opacity: 0.8;
+    }
+
+    .timer-progress {
+      width: 100%;
+      height: 4px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      overflow: hidden;
+      margin-top: 10px;
+      position: relative;
+    }
+
+    .timer-progress-bar {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), #7c4dff);
+      transform-origin: left;
+    }
+
+    .timer-progress-glow {
+      position: absolute;
+      inset: 0;
+      box-shadow: 0 0 18px rgba(38, 198, 218, 0.6);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+
+    .frame-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      background: radial-gradient(circle at top right, #151c3b 0, #060713 60%);
+      border-radius: 20px;
+      padding: 16px 16px 14px;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .meta-block {
+      padding: 10px 11px;
+      border-radius: 14px;
+      background: rgba(4, 6, 20, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.03);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .meta-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--text-muted);
+    }
+
+    .meta-value-main {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .meta-value-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 2px;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 6px;
+    }
+
+    .nav-btn {
+      border: none;
+      outline: none;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      background: rgba(6, 9, 26, 0.9);
+      color: var(--text-muted);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: background var(--transition-fast), color var(--transition-fast),
+        border-color var(--transition-fast), transform 0.15s ease;
+    }
+
+    .nav-btn:hover {
+      background: rgba(38, 198, 218, 0.12);
+      color: var(--accent);
+      border-color: rgba(38, 198, 218, 0.5);
+      transform: translateY(-1px);
+    }
+
+    .nav-btn span.icon {
+      font-size: 13px;
+    }
+
+    .nav-indicators {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.12);
+      cursor: pointer;
+      transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .nav-dot.active {
+      background: var(--accent);
+      transform: scale(1.25);
+      box-shadow: 0 0 10px rgba(38, 198, 218, 0.8);
+    }
+
+    .hint {
+      font-size: 10px;
+      color: var(--text-muted);
+      text-align: right;
+      opacity: 0.8;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.3); opacity: 0.4; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+<div class="app-wrapper">
+  <div class="frame">
+    <div class="frame-header">
+      <div class="brand">
+        <div class="brand-logo">P</div>
+        <div class="brand-text">
+          <div class="brand-title">PechaKucha · PIML</div>
+          <div class="brand-sub">Matheus da Silva Borges · 20×20</div>
+        </div>
+      </div>
+      <div class="header-right">
+        <button class="fullscreen-btn" id="fullscreenBtn">
+          <span class="icon">⛶</span>
+          <span>Tela cheia</span>
+        </button>
+        <div class="timer">
+          <div class="timer-dot"></div>
+          <div class="timer-label">Auto · Slide</div>
+          <div class="timer-value" id="timerText">20s</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="frame-main">
+      <!-- SLIDES -->
+      <div class="slide-container">
+        <div class="slide-number" id="slideCounter">01 / 20</div>
+        <div class="slides-inner" id="slidesRoot">
+          <!-- Slides serão inseridos via JS -->
+        </div>
+        <div class="timer-progress">
+          <div class="timer-progress-bar" id="progressBar"></div>
+          <div class="timer-progress-glow" id="progressGlow"></div>
+        </div>
+      </div>
+
+      <!-- SIDEBAR -->
+      <aside class="frame-sidebar">
+        <div class="meta-block">
+          <div class="meta-label">Projeto</div>
+          <div class="meta-value-main">Modelagem e Otimização em Mecânica dos Fluidos</div>
+          <div class="meta-value-sub">Physics-Informed Machine Learning (PIML) · CFD</div>
+        </div>
+        <div class="meta-block">
+          <div class="meta-label">Artigo Fichado</div>
+          <div class="meta-value-main">Sharma et al. (2023)</div>
+          <div class="meta-value-sub">A Review of Physics-Informed Machine Learning in Fluid Mechanics</div>
+        </div>
+        <div class="meta-block">
+          <div class="meta-label">Formato</div>
+          <div class="meta-value-main">PechaKucha · 20 slides × 20s</div>
+          <div class="meta-value-sub">Transição automática + navegação manual</div>
+        </div>
+
+        <div class="nav">
+          <div class="nav-buttons">
+            <button class="nav-btn" id="prevBtn">
+              <span class="icon">⟵</span>
+              <span>Anterior</span>
+            </button>
+            <button class="nav-btn" id="nextBtn">
+              <span>Próximo</span>
+              <span class="icon">⟶</span>
+            </button>
+          </div>
+          <div>
+            <div class="nav-indicators" id="navDots"></div>
+            <div class="hint">Setas do teclado ou aguarde troca automática (20s).</div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Conteúdo dos slides (título, tag, texto)
+  const slidesData = [
+    {
+      title: "Projeto de Mestrado",
+      tag: "Contextualização",
+      text: "Como o artigo se conecta ao estudo em Modelagem e Otimização."
+    },
+    {
+      title: "Sharma et al., 2023",
+      tag: "Referência",
+      text: "Revisão recente e central em Physics-Informed Machine Learning aplicado a fluidos."
+    },
+    {
+      title: "Physics-Informed ML",
+      tag: "Tema Geral",
+      text: "Integra algoritmos de aprendizado profundo com leis físicas descritas por EDPs."
+    },
+    {
+      title: "Lacunas do PIML",
+      tag: "Problema",
+      text: "Falta de padronização, robustez e benchmark unificado para cenários complexos."
+    },
+    {
+      title: "Objetivo do Artigo",
+      tag: "Objetivo Central",
+      text: "Realizar uma revisão abrangente, mapear métodos e apontar desafios em PIML."
+    },
+    {
+      title: "Base Teórica",
+      tag: "Fundamentos",
+      text: "PINNs, arquiteturas PDE-preserving e integração da física em loss, entradas e saídas."
+    },
+    {
+      title: "Objetivos Específicos",
+      tag: "Desdobramentos",
+      text: "Classificar métodos, comparar arquiteturas e avaliar limites em regimes complexos."
+    },
+    {
+      title: "Metodologia Geral",
+      tag: "Estratégia",
+      text: "Revisão sistemática da literatura combinada com estudo de caso em cavidade 2D."
+    },
+    {
+      title: "Procedimentos",
+      tag: "Benchmarking",
+      text: "Comparação entre PPNN e ConvResNet em previsão de campo de escoamento."
+    },
+    {
+      title: "Amostra",
+      tag: "Corpus",
+      text: "Conjunto de trabalhos recentes em PIML e simulações numéricas controladas."
+    },
+    {
+      title: "Resultado Principal",
+      tag: "Resultados",
+      text: "PPNN apresenta maior estabilidade temporal e melhor generalização que ConvResNet."
+    },
+    {
+      title: "Resultado Secundário",
+      tag: "Limites Atuais",
+      text: "PINNs mostram MSE elevado em escoamentos turbulentos de alto número de Reynolds."
+    },
+    {
+      title: "Discussão",
+      tag: "Análise",
+      text: "Incorporar física melhora eficiência de dados e robustez, mas há barreiras estruturais."
+    },
+    {
+      title: "Conclusão",
+      tag: "Síntese",
+      text: "PIML é promissor, porém necessita de arquiteturas mais sofisticadas e benchmarks sólidos."
+    },
+    {
+      title: "Relevância Científica",
+      tag: "Impacto",
+      text: "Artigo ocupa posição central na literatura e organiza o estado da arte da área."
+    },
+    {
+      title: "Limitações",
+      tag: "Crítica",
+      text: "Desafios com alta dimensionalidade, física multiescala e geometrias complexas."
+    },
+    {
+      title: "Contribuição Epistêmica",
+      tag: "Avanço",
+      text: "Oferece taxonomia clara e destaca tendências como GNNs e técnicas de UQ."
+    },
+    {
+      title: "Relação com o Projeto",
+      tag: "Aplicação",
+      text: "Base teórica e metodológica para combinar CFD clássico com PIML no mestrado."
+    },
+    {
+      title: "Próximos Passos",
+      tag: "Perspectivas",
+      text: "Explorar modelos híbridos e balanceamento de funções de perda em cenários reais."
+    },
+    {
+      title: "Encerramento",
+      tag: "Fechamento",
+      text: "Conclusão da apresentação e convite à discussão sobre aplicações futuras em PIML."
+    }
+  ];
+
+  const SLIDE_DURATION = 20; // segundos
+  let currentIndex = 0;
+  let timer = SLIDE_DURATION;
+  let intervalId = null;
+  let progressIntervalId = null;
+
+  const slidesRoot = document.getElementById("slidesRoot");
+  const navDots = document.getElementById("navDots");
+  const timerText = document.getElementById("timerText");
+  const slideCounter = document.getElementById("slideCounter");
+  const progressBar = document.getElementById("progressBar");
+  const progressGlow = document.getElementById("progressGlow");
+  const fullscreenBtn = document.getElementById("fullscreenBtn");
+
+  function createSlides() {
+    slidesData.forEach((slide, index) => {
+      const slideEl = document.createElement("div");
+      slideEl.className = "slide";
+      slideEl.dataset.index = index;
+
+      slideEl.innerHTML = `
+        <div class="slide-tag">
+          <span class="slide-tag-dot"></span>
+          <span>${slide.tag}</span>
+        </div>
+        <div class="slide-title">${slide.title}</div>
+        <div class="slide-body">${slide.text}</div>
+        <div class="slide-meta">PechaKucha · 20 segundos por slide · ${index + 1}/20</div>
+      `;
+      slidesRoot.appendChild(slideEl);
+
+      const dot = document.createElement("div");
+      dot.className = "nav-dot";
+      dot.dataset.index = index;
+      dot.addEventListener("click", () => goToSlide(index, true));
+      navDots.appendChild(dot);
+    });
+  }
+
+  function updateUI() {
+    const slides = document.querySelectorAll(".slide");
+    const dots = document.querySelectorAll(".nav-dot");
+
+    slides.forEach(s => s.classList.remove("active"));
+    dots.forEach(d => d.classList.remove("active"));
+
+    const activeSlide = slides[currentIndex];
+    const activeDot = dots[currentIndex];
+
+    if (activeSlide) activeSlide.classList.add("active");
+    if (activeDot) activeDot.classList.add("active");
+
+    slideCounter.textContent =
+      String(currentIndex + 1).padStart(2, "0") +
+      " / " +
+      String(slidesData.length).padStart(2, "0");
+  }
+
+  function startTimer() {
+    clearInterval(intervalId);
+    clearInterval(progressIntervalId);
+
+    timer = SLIDE_DURATION;
+    timerText.textContent = `${timer}s`;
+    progressBar.style.width = "0%";
+    progressGlow.style.opacity = "0";
+
+    intervalId = setInterval(() => {
+      timer--;
+      if (timer <= 0) {
+        nextSlide(false);
+      } else {
+        timerText.textContent = `${timer}s`;
+      }
+    }, 1000);
+
+    const totalSteps = SLIDE_DURATION * 10; // 0.1s steps
+    let step = 0;
+    progressIntervalId = setInterval(() => {
+      step++;
+      const ratio = Math.min(step / totalSteps, 1);
+      progressBar.style.width = ratio * 100 + "%";
+      progressGlow.style.opacity = ratio > 0.98 ? 0.8 : 0;
+      if (step >= totalSteps) clearInterval(progressIntervalId);
+    }, 100);
+  }
+
+  function goToSlide(index, resetTimer = false) {
+    currentIndex = (index + slidesData.length) % slidesData.length;
+    updateUI();
+    if (resetTimer) startTimer();
+  }
+
+  function nextSlide() {
+    goToSlide(currentIndex + 1, true);
+  }
+
+  function prevSlide() {
+    goToSlide(currentIndex - 1, true);
+  }
+
+  document.getElementById("nextBtn").addEventListener("click", () => nextSlide());
+  document.getElementById("prevBtn").addEventListener("click", () => prevSlide());
+
+  // Teclado: setas
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowRight") nextSlide();
+    if (e.key === "ArrowLeft") prevSlide();
+  });
+
+  // Tela cheia
+  fullscreenBtn.addEventListener("click", () => {
+    const elem = document.documentElement;
+    if (!document.fullscreenElement) {
+      if (elem.requestFullscreen) elem.requestFullscreen();
+    } else {
+      if (document.exitFullscreen) document.exitFullscreen();
+    }
+  });
+
+  // Init
+  createSlides();
+  goToSlide(0, false);
+  startTimer();
+</script>
+</body>
+</html>
