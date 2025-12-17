@@ -333,37 +333,71 @@
       color: var(--text-muted);
     }
 
-    .visual-main {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-    }
 
     /* Imagem real */
 
     .visual-main {
-      flex: 1;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-    }
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    min-height: 480px;
+    display: flex;
+    align-items: stretch;   /* 👈 importante */
+    justify-content: stretch;
+    position: relative;
+    overflow: hidden;
+  }
+
+
 
     .visual-img {
+    width: 100%;
+    height: 100%;
+    max-height: none;        /* ❌ remove o gargalo */
+    object-fit: cover;      /* 🔥 preenche */
+    object-position: center;
+    border-radius: 16px;
+    box-shadow:
+      0 18px 45px rgba(0, 0, 0, 0.9),
+      0 0 0 1px rgba(255, 255, 255, 0.12);
+  }
+
+  /* Foto/arte (pode cortar um pouco) */
+.visual-img-cover{
+  width:100%;
+  height:100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Gráfico/print/figura (não pode cortar) */
+.visual-img-contain{
+  width:100%;
+  height:100%;
+  object-fit: contain;
+  object-position: center;
+  background:#02030a;   /* evita barra branca feia */
+  padding: clamp(6px, 1.2vw, 16px);       /* dá respiro */
+}
+
+
+    .visual-qr {
       width: 100%;
       height: 100%;
-      max-height: 520px;          /* controla o limite em projetor */
+      max-height: none;        /* 👈 remove limite */
       object-fit: contain;
+      object-position: center;
+      padding: 28px;
+      background: #fff;
       border-radius: 16px;
       box-shadow:
         0 18px 45px rgba(0, 0, 0, 0.9),
         0 0 0 1px rgba(255, 255, 255, 0.12);
-      background: #02030a;
     }
+
+
+
+
 
     /* Gráficos abstratos (mantive como fallback) */
 
@@ -712,32 +746,40 @@
       title: "Lacunas do PIML",
       tag: "Problema",
       text: "Falta de padronização, robustez e benchmark unificado para cenários complexos.",
-      visual: "line"
+      visual: "image",
+      imageSrc: "slide04_piml.png",
+      imageCaption: "Representação visual de PIML / rede neural + equações."
     },
     {
       title: "Objetivo do Artigo",
       tag: "Objetivo Central",
       text: "Revisar métodos de PIML, aplicações e desafios em mecânica dos fluidos.",
-      visual: "doc"
+      visual: "image",
+      imageSrc: "slide05_objs.png",
+      imageCaption: "Objetivos principais do artigo."
     },
     {
       title: "Base Teórica",
       tag: "Fundamentos",
       text: "PINNs, arquiteturas PDE-preserving e integração da física em loss, entradas e saídas.",
-      visual: "doc"
+      visual: "image",
+      imageSrc: "slide06.png",  
+      imageCaption: "Representação visual da base teórica."
     },
     {
       title: "Objetivos Específicos",
       tag: "Desdobramentos",
       text: "Classificar métodos, comparar arquiteturas e avaliar limites em regimes complexos.",
-      visual: "doc"
+      visual: "image",
+      imageSrc: "slide07.png",
+      imageCaption: "Detalhes dos objetivos específicos do artigo."  
     },
     {
       title: "Metodologia Geral",
       tag: "Estratégia",
       text: "Revisão sistemática da literatura combinada com estudo de caso em cavidade 2D.",
       visual: "image",
-      imageSrc: "slide08_cavidade2d.png",
+      imageSrc: "slide09_cavidade2d.png",
       imageCaption: "Geometria da cavidade impulsionada 2D usada como benchmark."
     },
     {
@@ -750,29 +792,32 @@
       title: "Amostra",
       tag: "Corpus",
       text: "Conjunto de trabalhos recentes em PIML e simulações numéricas controladas.",
-      visual: "doc"
+      visual: "image",
+      imageSrc: "citacoes.png",
+      imageCaption: "Geometria da cavidade impulsionada 2D usada como benchmark."
     },
     {
       title: "Resultado Principal",
       tag: "Resultados",
       text: "PPNN apresenta maior estabilidade temporal e melhor generalização que ConvResNet.",
       visual: "image",
-      imageSrc: "slide11_resultado_ppnn.png",
-      imageCaption: "Gráfico de desempenho / estabilidade da PPNN."
+      imageSrc: "pinn_schema.png"
+
     },
     {
       title: "Resultado Secundário",
       tag: "Limites Atuais",
       text: "PINNs mostram MSE elevado em escoamentos turbulentos de alto número de Reynolds.",
       visual: "image",
-      imageSrc: "slide12_resultado_turbulento.png",
+      imageSrc: "turbulence.png",
       imageCaption: "Gráfico de erro em regime turbulento de alto Re."
     },
     {
       title: "Discussão",
       tag: "Análise",
       text: "Incorporar física melhora eficiência de dados e robustez, mas há barreiras estruturais.",
-      visual: "line"
+      visual: "image",
+      imageSrc: "slide_discussao.png",
     },
     {
       title: "Conclusão",
@@ -816,7 +861,9 @@
       title: "Encerramento",
       tag: "Fechamento",
       text: "Conclusão da apresentação e convite à discussão sobre aplicações futuras em PIML.",
-      visual: "doc"
+      visual: "image",
+      imageSrc: "qrcode_encerramento.png",
+      imageCaption: "QR Code para acesso ao artigo completo e materiais adicionais."
     }
   ];
 
@@ -848,14 +895,27 @@
 
     switch (type) {
       case "image": {
-        label.textContent = slide.imageCaption || "Figura do artigo";
-        const img = document.createElement("img");
-        img.className = "visual-img";
-        img.src = slide.imageSrc;   // aqui você só renomeia o arquivo
-        img.alt = slide.imageCaption || slide.title;
-        visualMain.appendChild(img);
-        break;
-      }
+      label.textContent = slide.imageCaption || "Figura do artigo";
+
+      const img = document.createElement("img");
+
+      const src = (slide.imageSrc || "").toLowerCase();
+      const caption = (slide.imageCaption || "").toLowerCase();
+
+      const isQR = src.includes("qrcode") || caption.includes("qr");
+      const isFigure = src.includes("graf") || src.includes("plot") || src.includes("chart")
+                    || src.includes("resultado") || src.includes("figure") || src.includes("fig")
+                    || caption.includes("gráfico") || caption.includes("erro") || caption.includes("mse");
+
+      if (isQR) img.className = "visual-qr";
+      else img.className = isFigure ? "visual-img-contain" : "visual-img-cover";
+
+      img.src = slide.imageSrc;
+      img.alt = slide.imageCaption || slide.title;
+
+      visualMain.appendChild(img);
+      break;
+    }
       case "chartBars": {
         label.textContent = "Gráfico comparativo · PPNN vs ConvResNet";
         const bars = document.createElement("div");
